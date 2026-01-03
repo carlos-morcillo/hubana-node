@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "25ac1217-b191-4926-96c5-b3aeab3d92fa",
+		"name": "Node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1183038"
+	},
+	"item": [
+		{
+			"name": "convert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"value": "{\"id\":42,\"date\":1492012745,\"company\":{\"name\":\"myCompany\",\"address\":\"here\",\"city\":\"Notfar\",\"postalCode\":123456},\"customer\":{\"name\":\"myCustomer\",\"address\":\"there\",\"city\":\"Faraway\",\"postalCode\":654321},\"products\":[{\"name\":\"product 1\",\"priceUnit\":0.1,\"quantity\":10,\"priceTotal\":1},{\"name\":\"product 2\",\"priceUnit\":0.2,\"quantity\":20,\"priceTotal\":4},{\"name\":\"product 3\",\"priceUnit\":0.3,\"quantity\":30,\"priceTotal\":9}],\"total\":14}",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/carlosmorcillo/Projects/Playground/carbone-playground-2/template2.odt"
+						},
+						{
+							"key": "options",
+							"value": "{}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3001/convert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3001",
+					"path": [
+						"convert"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

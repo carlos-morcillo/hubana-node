@@ -1,0 +1,7 @@
+ARG NODE_VERSION
+FROM node:$NODE_VERSION
+
+# LibreOffice
+RUN apt update && apt install -y lsof libxinerama1 libfontconfig1 libdbus-glib-1-2 libcairo2 libcups2 libglu1-mesa libsm6 unzip libx11-xcb1 && apt clean
+RUN mkdir /tmp/lo && wget https://downloadarchive.documentfoundation.org/libreoffice/old/7.1.4.1/deb/x86_64/LibreOffice_7.1.4.1_Linux_x86-64_deb.tar.gz -O /tmp/lo/lo.tar.gz && tar -zxvf /tmp/lo/lo.tar.gz -C /tmp/lo && cd /tmp/lo/LibreOffice_7.1.4.1_Linux_x86-64_deb/DEBS && dpkg -i *.deb && rm -fr /tmp/lo
+
