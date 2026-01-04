@@ -37,6 +37,20 @@ try {
 } catch (e) {
     console.error('[STARTUP] soffice --version FAILED:', e.message);
 }
+// Test fs.existsSync for all paths Carbone might check
+const pathsToCheck = [
+    '/usr/bin/soffice',
+    '/usr/bin/libreoffice',
+    '/usr/local/bin/soffice',
+    '/usr/lib/libreoffice/program/soffice',
+    '/usr/lib/libreoffice/program/soffice.bin',
+    '/opt/libreoffice/program/soffice.bin',
+    '/opt/libreoffice7.4/program/soffice.bin',
+];
+console.log('[STARTUP] fs.existsSync checks:');
+for (const p of pathsToCheck) {
+    console.log(`  ${p}: ${fs.existsSync(p)}`);
+}
 
 console.log('[STARTUP] Pre-checks complete. Loading Carbone...');
 
