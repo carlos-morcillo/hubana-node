@@ -30,7 +30,10 @@ for (const p of possiblePaths) {
 
 if (loPath) {
     console.log(`[INFO] LibreOffice found at: ${loPath}`);
-    carbone.set({ startFactory: true, factory: { path: loPath } });
+    console.log(`[INFO] LibreOffice found at: ${loPath}`);
+    // Carbone v3 automatically finds libreoffice in PATH. 
+    // We don't need to set it manually if it's in /usr/bin/libreoffice.
+    // Setting invalid options causes crash.
 } else {
     console.warn('[WARN] LibreOffice binary NOT FOUND in common paths. Carbone might fail.');
 }
