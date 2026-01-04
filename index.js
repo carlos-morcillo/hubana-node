@@ -1,8 +1,49 @@
 const express = require('express');
-const carbone = require('carbone');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const { execSync } = require('child_process');
+
+// --- SYNC DIAGNOSTICS (BEFORE CARBONE LOADS) ---
+console.log('[STARTUP] Starting pre-Carbone checks...');
+console.log('[STARTUP] HOME:', process.env.HOME);
+console.log('[STARTUP] PATH:', process.env.PATH);
+
+// Ensure HOME is set (LibreOffice needs a user profile directory)
+if (!process.env.HOME) {
+    process.env.HOME = '/tmp';
+    console.log('[STARTUP] HOME was not set, setting to /tmp');
+}
+
+// Create LibreOffice profile directory
+const loProfile = path.join(process.env.HOME, '.config', 'libreoffice');
+if (!fs.existsSync(loProfile)) {
+    fs.mkdirSync(loProfile, { recursive: true });
+    console.log('[STARTUP] Created LibreOffice profile dir:', loProfile);
+}
+
+// Test execSync which soffice (exactly what Carbone does)
+try {
+    const result = execSync('which soffice', { encoding: 'utf8' });
+    console.log('[STARTUP] execSync which soffice:', result.trim());
+} catch (e) {
+    console.error('[STARTUP] execSync which soffice FAILED:', e.message);
+}
+
+// Test libreoffice --version (to ensure it can execute)
+try {
+    const result = execSync('soffice --version', { encoding: 'utf8', timeout: 10000 });
+    console.log('[STARTUP] soffice --version:', result.trim());
+} catch (e) {
+    console.error('[STARTUP] soffice --version FAILED:', e.message);
+}
+
+console.log('[STARTUP] Pre-checks complete. Loading Carbone...');
+
+// NOW load Carbone (after environment is set up)
+const carbone = require('carbone');
+console.log('[STARTUP] Carbone loaded successfully.');
+
 const app = express();
 // Force 3001 because Easypanel proxy is explicitly configured to point to 3001
 const port = 3001;
