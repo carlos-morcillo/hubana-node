@@ -8,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     fonts-noto \
     fonts-noto-cjk \
     default-jre-headless \
+    python3 \
+    python3-uno \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Tell Carbone where to find soffice
