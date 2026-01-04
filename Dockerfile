@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install -y \
     default-jre-headless \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Tell Carbone where to find soffice
+ENV SOFFICE_PATH=/usr/bin/soffice
 
 # App Setup
 WORKDIR /app
