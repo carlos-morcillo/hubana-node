@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 /* Creates the directory used to store the generated reports. */
 const reportDestination = path.join('/tmp', 'reports');
