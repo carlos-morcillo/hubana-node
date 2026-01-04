@@ -12,7 +12,26 @@ if (!fs.existsSync(reportDestination)) {
 	fs.mkdirSync(reportDestination, { recursive: true });
 }
 
-// Attempt to locate LibreOffice to help Carbone
+// --- DIAGNOSTICS START ---
+const { exec } = require('child_process');
+console.log('[DIAGNOSTICS] PATH:', process.env.PATH);
+
+const checkCmd = (name, cmd) => {
+    exec(cmd, (err, stdout, stderr) => {
+        console.log(`[DIAGNOSTICS] ${name}:`);
+        if (err) console.log(`  Error: ${err.message}`);
+        if (stdout) console.log(`  Stdout: ${stdout.trim()}`);
+        if (stderr) console.log(`  Stderr: ${stderr.trim()}`);
+    });
+};
+
+checkCmd('Check `libreoffice` path', 'which libreoffice');
+checkCmd('Check `soffice` path', 'which soffice');
+checkCmd('Check `libreoffice` version', 'libreoffice --version');
+checkCmd('Check `soffice` version', 'soffice --version');
+// --- DIAGNOSTICS END ---
+
+// Attempt to locate LibreOffice to help Carbone (legacy check)
 const possiblePaths = [
     process.env.LIBREOFFICE_PATH,
     '/usr/bin/libreoffice',
@@ -30,8 +49,6 @@ for (const p of possiblePaths) {
 
 if (loPath) {
     console.log(`[INFO] LibreOffice found at: ${loPath}`);
-    // Carbone v3.5.6 does NOT support factory option.
-    // We rely on PATH.
 } else {
     console.warn('[WARN] LibreOffice binary NOT FOUND in common paths. Carbone might fail.');
 }
