@@ -4,7 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
 const app = express();
-const port = process.env.PORT || 3001;
+// Force 3001 because Easypanel proxy is explicitly configured to point to 3001
+const port = 3001;
 
 const reportDestination = path.join('/tmp', 'reports');
 if (!fs.existsSync(reportDestination)) {
