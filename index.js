@@ -37,6 +37,11 @@ if (loPath) {
 /* Setting up a middleware in the Express application to allow parsing of JSON in the incoming requests. */
 app.use(express.json());
 
+/* Health check endpoint for Easypanel */
+app.get('/', (req, res) => {
+    res.json({ status: 'ok', message: 'Carbone Service Running' });
+});
+
 /* Configuring Multer, a middleware for handling file uploads in Express. */
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
