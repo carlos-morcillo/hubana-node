@@ -30,8 +30,8 @@ for (const p of possiblePaths) {
 
 if (loPath) {
     console.log(`[INFO] LibreOffice found at: ${loPath}`);
-    // Carbone v5 supports factory configuration
-    carbone.set({ startFactory: true, factory: { path: loPath } });
+    // Carbone v3.5.6 does NOT support factory option.
+    // We rely on PATH.
 } else {
     console.warn('[WARN] LibreOffice binary NOT FOUND in common paths. Carbone might fail.');
 }

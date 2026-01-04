@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y \
     libreoffice \
     fonts-noto \
     fonts-noto-cjk \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && ln -s /usr/bin/libreoffice /usr/bin/soffice
 
 # App Setup
 WORKDIR /app
