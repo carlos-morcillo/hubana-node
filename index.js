@@ -122,6 +122,6 @@ app.post('/convert', upload.single('file'), (req, res) => {
 });
 
 /* Starting the server and listening for incoming requests on the specified port. */
-const server = app.listen(port, () => {
-	console.log(`Servidor API REST en ejecución en http://localhost:${port}`);
+const server = app.listen(port, '0.0.0.0', () => {
+	console.log(`Servidor API REST en ejecución en http://0.0.0.0:${port}`);
 });
