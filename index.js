@@ -58,6 +58,34 @@ console.log('[STARTUP] Pre-checks complete. Loading Carbone...');
 const carbone = require('carbone');
 console.log('[STARTUP] Carbone loaded successfully.');
 
+// Try to access and patch Carbone's internal converter module
+try {
+    // The converter module path
+    const converterPath = require.resolve('carbone/lib/converter');
+    console.log('[STARTUP] Converter module path:', converterPath);
+    
+    // Try to load it directly
+    const converter = require('carbone/lib/converter');
+    console.log('[STARTUP] Converter module loaded');
+    console.log('[STARTUP] Converter keys:', Object.keys(converter));
+    
+    // Try to see if there's a way to set the path
+    if (typeof converter.init === 'function') {
+        console.log('[STARTUP] Calling converter.init()...');
+        converter.init();
+    }
+    
+    // Check if there's an internal path variable we can log
+    if (converter._converterPath !== undefined) {
+        console.log('[STARTUP] converter._converterPath:', converter._converterPath);
+    }
+    if (converter._soffice !== undefined) {
+        console.log('[STARTUP] converter._soffice:', converter._soffice);
+    }
+} catch (e) {
+    console.error('[STARTUP] Error accessing converter:', e.message);
+}
+
 const app = express();
 // Force 3001 because Easypanel proxy is explicitly configured to point to 3001
 const port = 3001;
