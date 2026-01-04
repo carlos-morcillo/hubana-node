@@ -50,7 +50,8 @@ app.post('/convert', upload.single('file'), (req, res) => {
 		},
 		async function (err, result) {
 			if (err) {
-				res.sendStatus(500).json({ message: 'error rendering file' });
+				console.error('Carbone Render Error:', err);
+				return res.status(500).json({ message: 'error rendering file', error: err.toString() });
 			}
 
 			try {
@@ -59,7 +60,8 @@ app.post('/convert', upload.single('file'), (req, res) => {
 					result
 				);
 			} catch (error) {
-				res.sendStatus(500).json({ message: 'error writing file' });
+				console.error('File Write Error:', error);
+				return res.status(500).json({ message: 'error writing file', error: error.toString() });
 			}
 
 			const options = {
@@ -73,14 +75,25 @@ app.post('/convert', upload.single('file'), (req, res) => {
 			};
 			res.sendFile(`./${reportName}`, options, async (err) => {
 				if (err) {
-					res.sendStatus(500).json({ message: 'error sending file' });
+					console.error('Send File Error:', err);
+					// Cannot send JSON if headers sent, but try/catch block is implicit here if res.sendFile fails?
+					// Usually res.sendFile handles error callback.
+					// If we get here, headers likely not sent fully or connection closed.
+					// We can't really reply if sendFile fails mid-stream, but we'll try just in case.
+					if (!res.headersSent) {
+						res.status(500).json({ message: 'error sending file', error: err.toString() });
+					}
 				}
-				await fs.promises.unlink(
-					path.join(reportDestination, reportName)
-				);
-				await fs.promises.unlink(
-					path.join(file.destination, file.originalname)
-				);
+				try {
+					await fs.promises.unlink(
+						path.join(reportDestination, reportName)
+					);
+					await fs.promises.unlink(
+						path.join(file.destination, file.originalname)
+					);
+				} catch (e) {
+					console.error('Cleanup Error:', e);
+				}
 			});
 		}
 	);
