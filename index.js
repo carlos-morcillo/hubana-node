@@ -6,10 +6,32 @@ const multer = require('multer');
 const app = express();
 const port = process.env.PORT || 3001;
 
-/* Creates the directory used to store the generated reports. */
 const reportDestination = path.join('/tmp', 'reports');
 if (!fs.existsSync(reportDestination)) {
 	fs.mkdirSync(reportDestination, { recursive: true });
+}
+
+// Attempt to locate LibreOffice to help Carbone
+const possiblePaths = [
+    process.env.LIBREOFFICE_PATH,
+    '/usr/bin/libreoffice',
+    '/usr/lib/libreoffice/program/soffice',
+    '/usr/bin/soffice'
+];
+
+let loPath = null;
+for (const p of possiblePaths) {
+    if (p && fs.existsSync(p)) {
+        loPath = p;
+        break;
+    }
+}
+
+if (loPath) {
+    console.log(`[INFO] LibreOffice found at: ${loPath}`);
+    carbone.set({ startFactory: true, factory: { path: loPath } });
+} else {
+    console.warn('[WARN] LibreOffice binary NOT FOUND in common paths. Carbone might fail.');
 }
 
 /* Setting up a middleware in the Express application to allow parsing of JSON in the incoming requests. */
